@@ -6,12 +6,23 @@
 
 @model List<UserData>
 @{
+    
+    int count = 1; // Ini
+    void UpdateCount()
+    {
+        count++;
+    }
+
+    int GetCount()
+    {
+        return count;
+    }
 }
 
 <form asp-action="Create">
 
 
-    @for (var i =0;i< 9; i++)
+    @for (var i =0;i< @count; i++)
     {
        <div>
          Name:  <input asp-for="@Model[i].FirstName"/>
@@ -19,6 +30,12 @@
          Name:  <input asp-for="@Model[i].Email"/>
        </div>
     }
+    <div>
+        @GetCount()
+        <button type="button" onclick="@(() => UpdateCount())">Increment</button>
+    </div>   
 
   <input type="submit" value="Add"/>
 </form>
+
+
