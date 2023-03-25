@@ -1,41 +1,68 @@
 ﻿@using Project_List_Object.Data;
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
 
 @model List<UserData>
-@{
-    
-    int count = 1; // Ini
-    void UpdateCount()
-    {
-        count++;
-    }
-
-    int GetCount()
-    {
-        return count;
-    }
-}
-
-<form asp-action="Create">
-
-
-    @for (var i =0;i< @count; i++)
-    {
-       <div>
-         Name:  <input asp-for="@Model[i].FirstName"/>
-         Name:  <input asp-for="@Model[i].LastName"/>
-         Name:  <input asp-for="@Model[i].Email"/>
-       </div>
-    }
-    <div>
-        @GetCount()
-        <button type="button" onclick="@(() => UpdateCount())">Increment</button>
-    </div>   
-
-  <input type="submit" value="Add"/>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Registration Form</title>
+	<!-- Include Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+</head>
+<body>
+<form class="" asp-action="Create">
+	<div class="container mt-5 userRegistrationForm">
+		<div class="row">
+			<div class="col-md-6">
+				<h3>User Registration Form</h3>
+					<div class="mb-3">
+						<label for="username" class="form-label">Username</label>
+						<input type="text" class="form-control" id="username" asp-for="@Model[0].FirstName">
+					</div>
+					<div class="mb-3">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" class="form-control" id="email" asp-for="@Model[0].Email">
+					</div>
+					<button type="button" class="btn btn-danger deleteForm">Delete</button>
+			</div>
+		</div>
+	</div>
+	<input type="submit" value="Submit"  />
 </form>
+		<div class="row mt-5">
+			<div class="col-md-6">
+				<button id="newUserRegistrationForm" class="btn btn-secondary">Add Form</button>
+			</div>
+			
+		</div>
+	
+				
 
+	<!-- Include jQuery and Bootstrap JS -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var formCount = 0; // initialize form count
 
+			// add new form
+			$("#newUserRegistrationForm").click(function () {
+				var clonedForm = $(".userRegistrationForm:first").clone(); // clone the first form
+				clonedForm.find("input").val(""); // reset input values in the cloned form
+				formCount++; // increment form count
+				clonedForm.find("label[for='username']").attr("for", "username-" + formCount); // update label for attribute
+				clonedForm.find("#username").attr("id", "username-" + formCount).attr("asp-for", "@Model" + "[" + formCount + "].FirstName").attr("name", "@Model" + "[" + formCount + "].FirstName"); // update name and id attributes of input fields
+				clonedForm.find("label[for='email']").attr("for", "email-" + formCount); // update label for attribute
+				clonedForm.find("#email").attr("id", "email-" + formCount).attr("asp-for", "@Model" + "[" + formCount + "].Email").attr("name", "@Model" + "[" + formCount + "].Email"); // update name and id attributes of input fields
+				clonedForm.find(".deleteForm").show(); // show the delete button for cloned form
+				$(".userRegistrationForm:last").after(clonedForm); // append the cloned form to the bottom of the page
+			});
+
+			// delete form
+			$(document).on('click', '.deleteForm', function () {
+				$(this).closest(".userRegistrationForm").remove(); // remove the closest form when delete button is clicked
+			});
+		});
+	</script>
+	
+</body>
+</html>

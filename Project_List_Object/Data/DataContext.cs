@@ -9,6 +9,7 @@ namespace Project_List_Object.Data
 
         }
         public DbSet<UserData> User { get; set; }
+        public DbSet<UserJobsData> Jobs { get; set; }
     }
     
 }

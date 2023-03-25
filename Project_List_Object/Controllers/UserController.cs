@@ -17,7 +17,8 @@ namespace Project_List_Object.Controllers
             return View();
         }
         public IActionResult Create() 
-        { 
+        {
+          
             return View();
         }
         [HttpPost]
