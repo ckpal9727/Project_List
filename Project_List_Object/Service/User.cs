@@ -1,4 +1,5 @@
-﻿using Project_List_Object.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Project_List_Object.Data;
 
 namespace Project_List_Object.Service
 {
@@ -14,6 +15,11 @@ namespace Project_List_Object.Service
         {
             await dataContext.User.AddAsync(userData); 
             await dataContext.SaveChangesAsync();
+        }
+
+        public async Task<List<UserJobsData>> GetJobs()
+        {
+           return  await dataContext.Jobs.ToListAsync();
         }
     }
 }
