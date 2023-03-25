@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_List_Object.Data;
 
@@ -10,9 +11,10 @@ using Project_List_Object.Data;
 namespace Project_List_Object.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230325115848_migration2")]
+    partial class migration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,16 +41,11 @@ namespace Project_List_Object.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("JobId");
 
                     b.ToTable("User");
                 });
@@ -65,20 +62,25 @@ namespace Project_List_Object.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("Project_List_Object.Data.UserData", b =>
+            modelBuilder.Entity("Project_List_Object.Data.UserJobsData", b =>
                 {
-                    b.HasOne("Project_List_Object.Data.UserJobsData", "Job")
+                    b.HasOne("Project_List_Object.Data.UserData", "User")
                         .WithMany()
-                        .HasForeignKey("JobId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Job");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

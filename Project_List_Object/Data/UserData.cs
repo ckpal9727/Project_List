@@ -16,5 +16,7 @@ namespace Project_List_Object.Data
         [Required]
         [MaxLength(35)]
         public string Email { get; set; }
+        public int JobId { get; set; }
+        public virtual UserJobsData Job { get; set; }
     }
 }

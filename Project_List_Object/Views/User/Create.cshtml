@@ -1,41 +1,95 @@
 ﻿@using Project_List_Object.Data;
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
 
 @model List<UserData>
 @{
-    
-    int count = 1; // Ini
-    void UpdateCount()
-    {
-        count++;
-    }
-
-    int GetCount()
-    {
-        return count;
-    }
+	var jobs = (List<UserJobsData>)TempData["jobs"];
 }
-
-<form asp-action="Create">
-
-
-    @for (var i =0;i< @count; i++)
-    {
-       <div>
-         Name:  <input asp-for="@Model[i].FirstName"/>
-         Name:  <input asp-for="@Model[i].LastName"/>
-         Name:  <input asp-for="@Model[i].Email"/>
-       </div>
-    }
-    <div>
-        @GetCount()
-        <button type="button" onclick="@(() => UpdateCount())">Increment</button>
-    </div>   
-
-  <input type="submit" value="Add"/>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Registration Form</title>
+	<!-- Include Bootstrap CSS -->
+	
+</head>
+<body>
+<form class="" asp-action="Create">
+	<div class="container mt-5 userRegistrationForm">
+		<div class="row">
+			<div class="col-md-6">
+				<h3>User Registration Form</h3>
+					<div class="mb-3">
+						<label for="username" class="form-label">Username</label>
+						<input type="text" class="form-control" id="username" asp-for="@Model[0].FirstName">
+					</div><div class="mb-3">
+						<label for="username" class="form-label">Last Name</label>
+						<input type="text" class="form-control" id="lastname" asp-for="@Model[0].LastName">
+					</div>
+					<div class="mb-3">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" class="form-control" id="email" asp-for="@Model[0].Email">
+					</div>
+					<select id="job" class="form-control" asp-for="@Model[0].JobId">
+						<option selected>Select Job</option>
+						@{
+							foreach (var job in jobs)
+							{
+								<option value="@job.Id">@job.JobName</option>
+							}
+						}
+					</select>
+					<button type="button" class="btn btn-danger deleteForm">Delete</button>
+			</div>
+		</div>
+	</div>
+	<input type="submit" value="Submit"  />
 </form>
+		<div class="row mt-5">
+			<div class="col-md-6">
+				<button id="newUserRegistrationForm" class="btn btn-secondary">Add Form</button>
+			</div>
+			
+		</div>
+	
+				
 
+	<!-- Include jQuery and Bootstrap JS -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var formCount =1; // initialize form count to the number of forms passed in the model
 
+			// add new form
+			$("#newUserRegistrationForm").click(function () {
+				var clonedForm = $(".userRegistrationForm:first").clone(); // clone the first form
+				clonedForm.find("input").val(""); // reset input values in the cloned form
+				formCount++; // increment form count
+				clonedForm.find("label[for='username']").attr("for", "username-" + formCount); // update label for attribute
+				clonedForm.find("#username").attr("id", "username-" + formCount).attr("asp-for", "@Model" + "[" + (formCount - 1) + "].FirstName").attr("name", "@Model" + "[" + (formCount - 1) + "].FirstName"); // update name and id attributes of input fields
+				clonedForm.find("#lastname").attr("id", "lastname-" + formCount).attr("asp-for", "@Model" + "[" + (formCount - 1) + "].LastName").attr("name", "@Model" + "[" + (formCount - 1) + "].LastName"); // update name and id attributes of input fields
+				clonedForm.find("label[for='email']").attr("for", "email-" + formCount); // update label for attribute
+				clonedForm.find("#email").attr("id", "email-" + formCount).attr("asp-for", "@Model" + "[" + (formCount - 1) + "].Email").attr("name", "@Model" + "[" + (formCount - 1) + "].Email"); // update name and id attributes of input fields
+				clonedForm.find("#job").attr("id", "job-" + formCount).attr("asp-for", "@Model" + "[" + (formCount - 1) + "].JobId").attr("name", "@Model" + "[" + (formCount - 1) + "].JobId"); // update name and id attributes of input fields
+				clonedForm.find(".deleteForm").show(); // show the delete button for cloned form
+				$(".userRegistrationForm:last").after(clonedForm); // append the cloned form to the bottom of the page
+			});
+
+			// delete form
+			$(document).on('click', '.deleteForm', function () {
+				$(this).closest(".userRegistrationForm").remove(); // remove the closest form when delete button is clicked
+				formCount--; // decrement form count
+				$(".userRegistrationForm").each(function (index) {
+					$(this).find("label[for='username-" + (index + 2) + "']").attr("for", "username-" + (index + 1)); // update label for attribute
+					$(this).find("#username-" + (index + 2)).attr("id", "username-" + (index + 1)).attr("asp-for", "@Model" + "[" + index + "].FirstName").attr("name", "@Model" + "[" + index + "].FirstName"); // update name and id attributes of input fields
+					$(this).find("#lastname-" + (index + 2)).attr("id", "lastname-" + (index + 1)).attr("asp-for", "@Model" + "[" + index + "].LastName").attr("name", "@Model" + "[" + index + "].LastName"); // update name and id attributes of input fields
+					$(this).find("label[for='email-" + (index + 2) + "']").attr("for", "email-" + (index + 1)); // update label for attribute
+					$(this).find("#email-" + (index + 2)).attr("id", "email-" + (index + 1)).attr("asp-for", "@Model" + "[" + index + "].Email").attr("name", "@Model" + "[" + index + "].Email"); // update name and id attributes of input fields
+					$(this).find("#job-" + (index + 2)).attr("id", "job-" + (index + 1)).attr("asp-for", "@Model" + "[" + index + "].JobId").attr("name", "@Model" + "[" + index + "].JobId"); // update name and id attributes of input fields
+				});
+			});
+		});
+
+	</script>
+	
+</body>
+</html>

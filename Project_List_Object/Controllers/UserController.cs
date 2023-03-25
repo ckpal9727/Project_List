@@ -16,18 +16,30 @@ namespace Project_List_Object.Controllers
         {
             return View();
         }
-        public IActionResult Create() 
-        { 
-            return View();
+        public async Task<IActionResult> Create() 
+        {
+			var jobs = await user.GetJobs();
+			TempData["jobs"] = jobs;
+			return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(List<UserData> userData)
         {
+            var jobs= await user.GetJobs();
+            TempData["jobs"] = jobs;
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
            foreach (var users in userData)
             {
                 await user.AddUser(users);
             }
             return View(userData);
+        }
+        [HttpGet] public IActionResult Get()
+        {
+            return Ok();
         }
     }
 }
