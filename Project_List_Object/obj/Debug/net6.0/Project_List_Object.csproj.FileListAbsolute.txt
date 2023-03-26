@@ -63,3 +63,5 @@ D:\ASPNET\Project_List_Object\Project_List_Object\obj\Debug\net6.0\Project_List_
 D:\ASPNET\Project_List_Object\Project_List_Object\obj\Debug\net6.0\ref\Project_List_Object.dll
 D:\ASPNET\Project_List_Object\Project_List_Object\bin\Debug\net6.0\Humanizer.dll
 D:\ASPNET\Project_List_Object\Project_List_Object\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\ASPNET\Project_List_Object\Project_List_Object\bin\Debug\net6.0\AutoMapper.dll
+D:\ASPNET\Project_List_Object\Project_List_Object\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
